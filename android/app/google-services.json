@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "671494182513",
+    "project_id": "free-put-f74a3",
+    "storage_bucket": "free-put-f74a3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:671494182513:android:23775b11d75124df896dd0",
+        "android_client_info": {
+          "package_name": "com.little.free_put"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDN7liZ4Rao1b-SK-UsDnykeyQ_urfeSsM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
