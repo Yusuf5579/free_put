@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:free_put/gen/assets.gen.dart';
+import 'package:free_put/src/features/home/cubit/home_cubit.dart';
 import 'package:free_put/src/features/home/cubit/upload_cubit.dart';
 import 'package:free_put/src/features/home/cubit/upload_state.dart';
 import 'package:free_put/src/features/home/widgets/home_folders.dart';
@@ -12,7 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:toastification/toastification.dart';
 
 class HomeScreen extends StatefulWidget {
-  const new({super.key});
+  const HomeScreen({super.key});
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -61,131 +62,143 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      body: Padding(
-        padding: .symmetric(horizontal: 20, vertical: 10),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: .start,
-            children: [
-              Text(
-                'WORKSPACE',
-                style: GoogleFonts.inter(
-                  fontSize: 11,
-                  fontWeight: .bold,
-                  color: Color(0xFF4C635D),
-                ),
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 200,
-                    child: Text(
-                      'Good morning, Elena',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 26,
-                        fontWeight: .w500,
-                        color: Color(0xFF1A1C1B),
-                      ),
-                    ),
-                  ),
-                  Spacer(),
-                  Container(
-                    height: 40,
-                    width: 109,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Color(0xFFCBE5DD),
-                    ),
-                    padding: .symmetric(horizontal: 12, vertical: 6),
-                    child: Row(
-                      mainAxisAlignment: .spaceBetween,
-                      children: [
-                        CircleAvatar(
-                          radius: 4,
-                          backgroundColor: Color(0xFF4C635D),
-                        ),
-                        SizedBox(
-                          width: 70,
-                          child: Text(
-                            'Vault Synced',
+      body: BlocProvider(
+        create: (context) => HomeCubit()..getFiles(),
+        child: Builder(
+          builder: (context) {
+            return Padding(
+                  padding: .symmetric(horizontal: 20, vertical: 10),
+                  child: RefreshIndicator.adaptive(
+                    onRefresh: ()async{
+                      context.read<HomeCubit>().getFiles();
+                    },
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: .start,
+                        children: [
+                          Text(
+                            'WORKSPACE',
                             style: GoogleFonts.inter(
                               fontSize: 11,
-                              fontWeight: .w500,
-                              color: Color(0xFF506761),
+                              fontWeight: .bold,
+                              color: Color(0xFF4C635D),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Find Files',
-                  hintStyle: GoogleFonts.inter(
-                    fontSize: 18,
-                    fontWeight: .w400,
-                    color: Color(0xFF44474A),
-                  ),
-                  prefixIconConstraints: BoxConstraints(maxHeight: 17),
-                  prefixIcon: Padding(
-                    padding: .only(left: 20, right: 5),
-                    child: SvgPicture.asset(Assets.icons.search),
-                  ),
-                  suffixIcon: Padding(
-                    padding: .only(right: 20, left: 5),
-
-                    child: SvgPicture.asset(Assets.icons.voice),
-                  ),
-                  suffixIconConstraints: BoxConstraints(minHeight: 22),
-                  filled: true,
-                  fillColor: Colors.white,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              Row(spacing: 10, children: [TypeButton()]),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Text(
-                    'Curated Spaces',
-                    style: GoogleFonts.inter(
-                      fontSize: 18,
-                      fontWeight: .w500,
-                      color: Color(0xFF1A1C1B),
-                    ),
-                  ),
-                  Spacer(),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      'View all',
-                      style: GoogleFonts.inter(
-                        fontSize: 13,
-                        fontWeight: .w500,
-                        color: Color(0xFF4C635D),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 200,
+                                child: Text(
+                                  'Good morning, Elena',
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 26,
+                                    fontWeight: .w500,
+                                    color: Color(0xFF1A1C1B),
+                                  ),
+                                ),
+                              ),
+                              Spacer(),
+                              Container(
+                                height: 40,
+                                width: 109,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Color(0xFFCBE5DD),
+                                ),
+                                padding: .symmetric(horizontal: 12, vertical: 6),
+                                child: Row(
+                                  mainAxisAlignment: .spaceBetween,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 4,
+                                      backgroundColor: Color(0xFF4C635D),
+                                    ),
+                                    SizedBox(
+                                      width: 70,
+                                      child: Text(
+                                        'Vault Synced',
+                                        style: GoogleFonts.inter(
+                                          fontSize: 11,
+                                          fontWeight: .w500,
+                                          color: Color(0xFF506761),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          TextField(
+                            decoration: InputDecoration(
+                              hintText: 'Find Files',
+                              hintStyle: GoogleFonts.inter(
+                                fontSize: 18,
+                                fontWeight: .w400,
+                                color: Color(0xFF44474A),
+                              ),
+                              prefixIconConstraints: BoxConstraints(maxHeight: 17),
+                              prefixIcon: Padding(
+                                padding: .only(left: 20, right: 5),
+                                child: SvgPicture.asset(Assets.icons.search),
+                              ),
+                              suffixIcon: Padding(
+                                padding: .only(right: 20, left: 5),
+                    
+                                child: SvgPicture.asset(Assets.icons.voice),
+                              ),
+                              suffixIconConstraints: BoxConstraints(minHeight: 22),
+                              filled: true,
+                              fillColor: Colors.white,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Row(spacing: 10, children: [TypeButton()]),
+                          SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Text(
+                                'Curated Spaces',
+                                style: GoogleFonts.inter(
+                                  fontSize: 18,
+                                  fontWeight: .w500,
+                                  color: Color(0xFF1A1C1B),
+                                ),
+                              ),
+                              Spacer(),
+                              TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  'View all',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 13,
+                                    fontWeight: .w500,
+                                    color: Color(0xFF4C635D),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          HomeFolders(),
+                          SizedBox(height: 20),
+                          RecentFiles(),
+                          SizedBox(height: 100),
+                        ],
                       ),
                     ),
                   ),
-                ],
-              ),
-              SizedBox(height: 20),
-              HomeFolders(),
-              SizedBox(height: 20),
-              RecentFiles(),
-              SizedBox(height: 100),
-            ],
-          ),
+                );
+          }
         ),
       ),
       floatingActionButton: Padding(
@@ -276,21 +289,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                         : () {
                                             context
                                                 .read<UploadCubit>()
-                                                .fileYuborish();
-                                            Navigator.pop(context);
-                                            context.read<UploadCubit>().reset();
-                                            Toastification().show(
-                                              autoCloseDuration: Duration(
-                                                seconds: 2,
-                                              ),
-                                              context: context,
-                                              type: ToastificationType.success,
-                                              title: Text(
-                                                'Uploaded Successfully!',
-                                              ),
-                                            );
+                                                .fileYuborish(
+                                                  onError: (){},
+                                                  onSuccess: (){
+                                                    Navigator.pop(context);
+                                                    toastification.show(
+                                                      context: context,
+                                                      type: ToastificationType.success,
+                                                      title: Text('File uploaded successfully !')
+                                                    );
+                                                  }
+                                                );
+                                           
                                           },
-                                    child: Text(
+                                    child: state.status == UploadStatus.loading ? CircularProgressIndicator() : Text(
                                       'Upload',
                                       style: GoogleFonts.inter(
                                         fontSize: 14,

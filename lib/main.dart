@@ -1,14 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:free_put/firebase_options.dart';
 import 'package:free_put/src/core/appwrite/appwrite_client.dart';
 import 'package:free_put/src/features/home/cubit/upload_cubit.dart';
 import 'package:free_put/src/features/home/screens/home_screen.dart';
 
-void main() {
+void main()async{
   WidgetsFlutterBinding.ensureInitialized();
   AppwriteClient.init();
-  AppwriteClient.testConnection();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
     MultiBlocProvider(
       providers: [

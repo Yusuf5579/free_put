@@ -1,9 +1,9 @@
 import 'package:appwrite/appwrite.dart';
 class AppwriteClient {
   static final appwriteEndpoint = 'https://fra.cloud.appwrite.io/v1';
-  static final appwriteProjectId = '6aa8029d0024bc57095d';
-  static final bucketId = "6aa80afa002224d2e334";
-  static final appwriteProjectName = 'storage app';
+  static final appwriteProjectId = 'test-ai-app';
+  static final bucketId = "6aad546c003cc7b9a3b2";
+  static final appwriteProjectName = 'Test AI App';
   static late final Client appwriteClient;
   static late final Storage storage;
 

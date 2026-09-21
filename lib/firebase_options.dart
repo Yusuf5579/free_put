@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDN7liZ4Rao1b-SK-UsDnykeyQ_urfeSsM',
-    appId: '1:671494182513:android:23775b11d75124df896dd0',
-    messagingSenderId: '671494182513',
-    projectId: 'free-put-f74a3',
-    storageBucket: 'free-put-f74a3.firebasestorage.app',
+    apiKey: 'AIzaSyApYv_9ulFwcDzVPqxBECZUfilkRdu8eWY',
+    appId: '1:804696135027:android:d4569bba6f143bdee52106',
+    messagingSenderId: '804696135027',
+    projectId: 'freeput',
+    storageBucket: 'freeput.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAQr7iLFBSZ_5x_7-H9LWEuuwRI4x3ZtsA',
-    appId: '1:671494182513:ios:f976b74d78298c37896dd0',
-    messagingSenderId: '671494182513',
-    projectId: 'free-put-f74a3',
-    storageBucket: 'free-put-f74a3.firebasestorage.app',
+    apiKey: 'AIzaSyDciHTWqQIXk-7pnMyz9Q4PJG28cBT2VZk',
+    appId: '1:804696135027:ios:8397de3180b01a25e52106',
+    messagingSenderId: '804696135027',
+    projectId: 'freeput',
+    storageBucket: 'freeput.firebasestorage.app',
     iosBundleId: 'com.little.freePut',
   );
 }
