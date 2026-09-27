@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:free_put/firebase_options.dart';
 import 'package:free_put/src/core/appwrite/appwrite_client.dart';
+import 'package:free_put/src/features/files/cubit/folder_cubit.dart';
 import 'package:free_put/src/features/home/cubit/upload_cubit.dart';
 import 'package:free_put/src/features/home/screens/home_screen.dart';
 
@@ -15,6 +16,7 @@ void main()async{
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => UploadCubit(), child: HomeScreen()),
+        BlocProvider(create: (context) => FolderCubit()..getAllFiles()),
       ],
       child: MyApp(),
     ),

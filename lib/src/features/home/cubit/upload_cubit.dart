@@ -44,6 +44,7 @@ class UploadCubit extends Cubit<UploadState> {
       await FirebaseFirestore.instance.collection('files').add({
         "name" : path.basename(state.file!.path),
         "url" : fileUrl,
+        "fileId" : uploadFile.$id
       });
       onSuccess();
       reset();
