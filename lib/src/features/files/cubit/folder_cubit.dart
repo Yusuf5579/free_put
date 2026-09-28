@@ -12,6 +12,7 @@ class FolderCubit extends Cubit<FolderState> {
       final result = await FirebaseFirestore.instance.collection('files').get();
 
       Set data = {};
+      List files = [];
 
       for (var i = 0; i < result.docs.length; i++) {
         if (result.docs[i]
@@ -20,11 +21,12 @@ class FolderCubit extends Cubit<FolderState> {
             .toLowerCase()
             .endsWith('.mp3')) {
           data.add("Music");
+          files.add(result.docs[i]);
         } else if (result.docs[i]
-            .data()['name']
-            .toString()
-            .toLowerCase()
-            .endsWith('.mp4')) {
+                .data()['name']
+                .toString()
+                .toLowerCase()
+                .endsWith('.mp4')) {
           data.add("Videos");
         } else if (result.docs[i]
                 .data()['name']
@@ -35,25 +37,33 @@ class FolderCubit extends Cubit<FolderState> {
                 .data()['name']
                 .toString()
                 .toLowerCase()
-                .endsWith('.jpeg') || result.docs[i]
+                .endsWith('.jpeg') ||
+            result.docs[i]
                 .data()['name']
                 .toString()
                 .toLowerCase()
                 .endsWith('.jpg')) {
           data.add("Images");
+          files.add(result.docs[i]);
         } else if (result.docs[i]
-            .data()['name']
-            .toString()
-            .toLowerCase()
-            .endsWith('.pdf')) {
+                .data()['name']
+                .toString()
+                .toLowerCase()
+                .endsWith('.pdf')) {
           data.add("Docs");
         } else {
           data.add("Others");
         }
       }
 
-      emit(state.copyWith(
-          status: FolderStatus.success, data: result.docs, fileTypes: data));
+      emit(
+        state.copyWith(
+          files: files,
+          status: FolderStatus.success,
+          data: result.docs,
+          fileTypes: data,
+        ),
+      );
     } catch (e) {
       emit(state.copyWith(status: FolderStatus.failure));
     }
