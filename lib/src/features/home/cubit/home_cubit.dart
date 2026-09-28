@@ -10,9 +10,24 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(status: HomeStatus.loading));
     await Future.delayed(Duration(seconds: 3));
     try {
-      await AppwriteClient.storage
-          .deleteFile(bucketId: AppwriteClient.bucketId, fileId: fileId);
+      await AppwriteClient.storage.deleteFile(
+        bucketId: AppwriteClient.bucketId,
+        fileId: fileId,
+      );
       await FirebaseFirestore.instance.collection('files').doc(id).delete();
+      emit(state.copyWith(status: HomeStatus.success));
+    } catch (e) {
+      emit(state.copyWith(status: HomeStatus.failure));
+    }
+  }
+
+  Future<void> editFile(String id, String newName) async {
+    emit(state.copyWith(status: HomeStatus.loading));
+    await Future.delayed(Duration(seconds: 3));
+    try {
+      await FirebaseFirestore.instance.collection('files').doc(id).update({
+        "name": newName,
+      });
       emit(state.copyWith(status: HomeStatus.success));
     } catch (e) {
       emit(state.copyWith(status: HomeStatus.failure));

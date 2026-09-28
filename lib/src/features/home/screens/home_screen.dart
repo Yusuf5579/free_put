@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:free_put/gen/assets.gen.dart';
+import 'package:free_put/src/features/files/cubit/folder_cubit.dart';
 import 'package:free_put/src/features/home/cubit/home_cubit.dart';
 import 'package:free_put/src/features/home/cubit/home_state.dart';
 import 'package:free_put/src/features/home/cubit/upload_cubit.dart';
@@ -124,69 +125,74 @@ class _HomeViewState extends State<_HomeView> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        controller: _scroll,
-        physics: const AlwaysScrollableScrollPhysics(
-          parent: BouncingScrollPhysics(),
-        ),
-        padding: .fromLTRB(20, 12, 20, 120),
-        child: Column(
-          crossAxisAlignment: .start,
-          children: [
-            Row(
-              crossAxisAlignment: .end,
-              children: [
-                Expanded(child: _Greeting(name: 'Elena')),
-                BlocBuilder<HomeCubit, HomeState>(
-                  buildWhen: (a, b) => a.status != b.status,
-                  builder: (context, state) =>
-                      _SyncBadge(status: state.status),
-                ),
-              ],
-            ),
-            SizedBox(height: 28),
-            _SearchField(),
-            SizedBox(height: 16),
-            TypeButton(),
-            SizedBox(height: 36),
-            _SectionHeader(
-              title: 'Curated spaces',
-              trailing: TextButton(
-                onPressed: () {},
-                style: TextButton.styleFrom(
-                  foregroundColor: _Palette.sage,
-                  textStyle: GoogleFonts.inter(
-                    fontSize: 13,
-                    fontWeight: .w500,
+      body: RefreshIndicator(
+        onRefresh: () async{
+          await context.read<FolderCubit>().getAllFiles();
+        },
+        child: SingleChildScrollView(
+          controller: _scroll,
+          physics: const AlwaysScrollableScrollPhysics(
+            parent: BouncingScrollPhysics(),
+          ),
+          padding: .fromLTRB(20, 12, 20, 120),
+          child: Column(
+            crossAxisAlignment: .start,
+            children: [
+              Row(
+                crossAxisAlignment: .end,
+                children: [
+                  Expanded(child: _Greeting(name: 'Elena')),
+                  BlocBuilder<HomeCubit, HomeState>(
+                    buildWhen: (a, b) => a.status != b.status,
+                    builder: (context, state) =>
+                        _SyncBadge(status: state.status),
                   ),
-                ),
-                child: Text('View all'),
+                ],
               ),
-            ),
-            SizedBox(height: 12),
-            HomeFolders(),
-            SizedBox(height: 36),
-            _SectionHeader(
-              title: 'Recent files',
-              trailing: BlocBuilder<HomeCubit, HomeState>(
-                builder: (context, state) => AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 250),
-                  child: Text(
-                    state.status == HomeStatus.success
-                        ? '${state.data.length} files'
-                        : '',
-                    key: ValueKey(state.data.length),
-                    style: GoogleFonts.inter(
+              SizedBox(height: 28),
+              _SearchField(),
+              SizedBox(height: 16),
+              TypeButton(),
+              SizedBox(height: 36),
+              _SectionHeader(
+                title: 'Curated spaces',
+                trailing: TextButton(
+                  onPressed: () {},
+                  style: TextButton.styleFrom(
+                    foregroundColor: _Palette.sage,
+                    textStyle: GoogleFonts.inter(
                       fontSize: 13,
-                      color: _Palette.slate,
+                      fontWeight: .w500,
+                    ),
+                  ),
+                  child: Text('View all'),
+                ),
+              ),
+              SizedBox(height: 12),
+              HomeFolders(),
+              SizedBox(height: 36),
+              _SectionHeader(
+                title: 'Recent files',
+                trailing: BlocBuilder<HomeCubit, HomeState>(
+                  builder: (context, state) => AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    child: Text(
+                      state.status == HomeStatus.success
+                          ? '${state.data.length} files'
+                          : '',
+                      key: ValueKey(state.data.length),
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        color: _Palette.slate,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 12),
-            RecentFiles(),
-          ],
+              SizedBox(height: 12),
+              RecentFiles(),
+            ],
+          ),
         ),
       ),
       floatingActionButton: ValueListenableBuilder(
