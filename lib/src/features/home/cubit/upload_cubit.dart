@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:free_put/src/core/appwrite/appwrite_client.dart';
@@ -41,10 +42,15 @@ class UploadCubit extends Cubit<UploadState> {
       );
 
       final String fileUrl = '${AppwriteClient.appwriteEndpoint}/storage/buckets/${AppwriteClient.bucketId}/files/${uploadFile.$id}/view?project=${AppwriteClient.appwriteProjectId}';
+      
+      final deviceInfo = Platform.isIOS ? await DeviceInfoPlugin().iosInfo : await DeviceInfoPlugin().androidInfo;
+      
       await FirebaseFirestore.instance.collection('files').add({
         "name" : path.basename(state.file!.path),
         "url" : fileUrl,
-        "fileId" : uploadFile.$id
+        "fileId" : uploadFile.$id,
+        "device" : deviceInfo.data,
+        "time" : Timestamp.now()
       });
       onSuccess();
       reset();

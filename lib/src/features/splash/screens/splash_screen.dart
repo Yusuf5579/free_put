@@ -1,7 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:free_put/gen/assets.gen.dart';
+import 'package:free_put/src/core/utils/app_colors.dart';
 import 'package:free_put/src/features/home/screens/home_screen.dart';
+import 'package:free_put/src/features/splash/widgets/get_started_card.dart';
+import 'package:free_put/src/features/splash/widgets/staggered_line.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /// Splash sequence modelled on the 60fps "good-air-splash" shot: the logo
@@ -83,9 +85,9 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _onGetStarted() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const HomeScreen()),
-    );
+    Navigator.of(
+      context,
+    ).pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen()));
   }
 
   @override
@@ -124,14 +126,14 @@ class _SplashScreenState extends State<SplashScreen>
                         style: GoogleFonts.plusJakartaSans(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF1A1C1B),
+                          color: AppColors.ink,
                         ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 12),
                   for (var i = 0; i < _taglines.length; i++)
-                    _StaggeredLine(
+                    StaggeredLine(
                       animation: _lineAnimation(i),
                       text: _taglines[i],
                     ),
@@ -142,90 +144,10 @@ class _SplashScreenState extends State<SplashScreen>
               alignment: Alignment.bottomCenter,
               child: SlideTransition(
                 position: _cardSlide,
-                child: _BottomCard(onPressed: _onGetStarted),
+                child: GetStartedCard(onPressed: _onGetStarted),
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _StaggeredLine extends StatelessWidget {
-  const _StaggeredLine({required this.animation, required this.text});
-
-  final Animation<double> animation;
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: animation,
-      child: SlideTransition(
-        position: Tween<Offset>(
-          begin: const Offset(0, 0.5),
-          end: Offset.zero,
-        ).animate(animation),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 2),
-          child: Text(
-            text,
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 15,
-              color: const Color(0xFF44474A),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _BottomCard extends StatelessWidget {
-  const _BottomCard({required this.onPressed});
-
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.fromLTRB(
-        24,
-        28,
-        24,
-        24 + MediaQuery.of(context).padding.bottom,
-      ),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0x14000000),
-            blurRadius: 24,
-            offset: Offset(0, -6),
-          ),
-        ],
-      ),
-      child: SizedBox(
-        width: double.infinity,
-        height: 54,
-        child: FilledButton(
-          onPressed: onPressed,
-          style: FilledButton.styleFrom(
-            backgroundColor: CupertinoColors.activeBlue,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-          ),
-          child: Text(
-            'Get started',
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
         ),
       ),
     );

@@ -3,8 +3,7 @@ enum HomeStatus { initial, loading, success, failure }
 class HomeState {
   final HomeStatus status;
   final String? errorText;
-  final List<Map>
-      data; 
+  final List<Map> data;
 
   const HomeState({
     this.status = HomeStatus.initial,
